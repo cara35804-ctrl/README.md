@@ -1,0 +1,32 @@
+import os
+import sys
+from pyrogram import Client, filters
+
+# Load environment variables
+API_ID = int(os.environ.get("38315480", 0))
+API_HASH = os.environ.get("c2da649e07e13bf8d3b4b8c7b9fef057", "")
+SESSION_STRING = os.environ.get("SESSION_STRING", "")
+
+if not API_ID or not API_HASH or not SESSION_STRING:
+    print("Error: Missing environment variables.")
+    sys.exit(1)
+
+# Initialize client using string session
+app = Client(
+    "userbot",
+    api_id=API_ID,
+    api_hash=API_HASH,
+    session_string=SESSION_STRING
+)
+
+# Auto-reply filter: matches incoming private messages from other users
+@app.on_message(filters.private & ~filters.me & ~filters.bot)
+async def auto_reply(client, message):
+    # Customize your automated response text here
+    reply_text = "Hello! Thanks for reaching out. I'm currently away and will reply as soon as possible."
+    
+    await message.reply_text(reply_text)
+
+if __name__ == "__main__":
+    print("Userbot is running...")
+    app.run()
